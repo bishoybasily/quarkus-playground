@@ -1,0 +1,9 @@
+quarkus:
+  keycloak:
+    policy-enforcer:
+      enable: true
+  oidc:
+    auth-server-url: http://localhost:9090/auth/realms/simple-castle
+    client-id: first-party
+    credentials:
+      secret: bae20a62-a207-475a-b9f2-dc09921b9ddf
