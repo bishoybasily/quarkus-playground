@@ -1,6 +1,5 @@
 package com.gmail.bishoybasily.quarkus.model.dao;
 
-import com.gmail.bishoybasily.quarkus.model.entity.User;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -10,7 +9,7 @@ import javax.transaction.TransactionManager;
 
 @RequiredArgsConstructor
 @ApplicationScoped
-public class UsersDao implements JpaDao<User, String, Object> {
+public class UsersDao implements JpaDao {
 
     @Getter
     private final EntityManager entityManager;

@@ -8,13 +8,13 @@ import javax.persistence.criteria.*;
 import javax.transaction.TransactionManager;
 import java.io.Serializable;
 
-public interface JpaDao<T, Id extends Serializable, Params> {
+public interface JpaDao {
 
     TransactionManager getTransactionManager();
 
     EntityManager getEntityManager();
 
-    default Single<T> persist(T t) {
+    default <T> Single<T> persist(T t) {
         return Single.fromCallable(() -> {
             try {
                 getTransactionManager().begin();
@@ -28,13 +28,13 @@ public interface JpaDao<T, Id extends Serializable, Params> {
         });
     }
 
-    default Single<T> find(Class<T> cls, Id id) {
+    default <T, Id extends Serializable> Single<T> find(Class<T> cls, Id id) {
         return Single.fromCallable(() -> {
             return getEntityManager().find(cls, id);
         });
     }
 
-    default Observable<T> find(Class<T> cl, Params params) {
+    default <Params, T> Observable<T> find(Class<T> cl, Params params) {
         return Observable.create(emitter -> {
 
             try {
@@ -57,7 +57,7 @@ public interface JpaDao<T, Id extends Serializable, Params> {
         });
     }
 
-    default Single<T> delete(Class<T> cls, Id id) {
+    default <T, Id extends Serializable> Single<T> delete(Class<T> cls, Id id) {
         return find(cls, id).flatMap(t -> {
             return Single.fromCallable(() -> {
                 try {
@@ -73,7 +73,7 @@ public interface JpaDao<T, Id extends Serializable, Params> {
         });
     }
 
-    default CriteriaQuery<T> createCriteriaQuery(Params params, Root<T> root, CriteriaBuilder criteriaBuilder, CriteriaQuery<T> criteriaQuery) {
+    default <Params, T> CriteriaQuery<T> createCriteriaQuery(Params params, Root<T> root, CriteriaBuilder criteriaBuilder, CriteriaQuery<T> criteriaQuery) {
         return criteriaQuery
                 .select(createSelect(params, root, criteriaBuilder, criteriaQuery))
                 .distinct(createIsDistinct(params, root, criteriaBuilder, criteriaQuery))
@@ -83,27 +83,27 @@ public interface JpaDao<T, Id extends Serializable, Params> {
                 .orderBy(createOrderBy(params, root, criteriaBuilder, criteriaQuery));
     }
 
-    default Root<T> createSelect(Params p, Root<T> r, CriteriaBuilder cb, CriteriaQuery<T> cq) {
+    default <Params, T> Root<T> createSelect(Params p, Root<T> r, CriteriaBuilder cb, CriteriaQuery<T> cq) {
         return r;
     }
 
-    default boolean createIsDistinct(Params p, Root<T> r, CriteriaBuilder cb, CriteriaQuery<T> cq) {
+    default <Params, T> boolean createIsDistinct(Params p, Root<T> r, CriteriaBuilder cb, CriteriaQuery<T> cq) {
         return true;
     }
 
-    default Predicate[] createWhere(Params p, Root<T> r, CriteriaBuilder cb, CriteriaQuery<T> cq) {
+    default <Params, T> Predicate[] createWhere(Params p, Root<T> r, CriteriaBuilder cb, CriteriaQuery<T> cq) {
         return new Predicate[]{};
     }
 
-    default Expression<?>[] createGroupBy(Params p, Root<T> r, CriteriaBuilder cb, CriteriaQuery<T> cq) {
+    default <Params, T> Expression<?>[] createGroupBy(Params p, Root<T> r, CriteriaBuilder cb, CriteriaQuery<T> cq) {
         return new Expression[]{};
     }
 
-    default Predicate[] createHaving(Params p, Root<T> r, CriteriaBuilder cb, CriteriaQuery<T> cq) {
+    default <Params, T> Predicate[] createHaving(Params p, Root<T> r, CriteriaBuilder cb, CriteriaQuery<T> cq) {
         return new Predicate[]{};
     }
 
-    default Order[] createOrderBy(Params p, Root<T> r, CriteriaBuilder cb, CriteriaQuery<T> cq) {
+    default <Params, T> Order[] createOrderBy(Params p, Root<T> r, CriteriaBuilder cb, CriteriaQuery<T> cq) {
         return new Order[]{};
     }
 
