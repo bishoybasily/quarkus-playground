@@ -1,5 +1,6 @@
 package com.gmail.bishoybasily.quarkus.resource;
 
+import io.quarkus.security.identity.SecurityIdentity;
 import io.reactivex.Single;
 import lombok.RequiredArgsConstructor;
 import org.jboss.resteasy.annotations.cache.NoCache;
@@ -18,13 +19,15 @@ import javax.ws.rs.core.MediaType;
 @Path("/api/secured")
 public class ResourceSecured {
 
+    private final SecurityIdentity securityIdentity;
+
     @GET
     @Path("/a")
     @RolesAllowed("admin")
     @Produces(MediaType.APPLICATION_JSON)
     @NoCache
     public Single<String> a() {
-        return Single.just("a is allowed for admin only");
+        return Single.just("a is allowed for admin only like you: " + securityIdentity.getPrincipal().getName());
     }
 
     @GET
@@ -33,7 +36,7 @@ public class ResourceSecured {
     @Produces(MediaType.APPLICATION_JSON)
     @NoCache
     public Single<String> b() {
-        return Single.just("b is allowed for users only");
+        return Single.just("b is allowed for users only like you: " + securityIdentity.getPrincipal().getName());
     }
 
 }
