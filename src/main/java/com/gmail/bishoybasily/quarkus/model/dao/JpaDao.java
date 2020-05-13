@@ -34,6 +34,29 @@ public interface JpaDao {
         });
     }
 
+    default <T> Observable<T> find(Class<T> cl) {
+        return Observable.create(emitter -> {
+
+            try {
+
+                CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();
+                CriteriaQuery<T> criteriaQuery = criteriaBuilder.createQuery(cl);
+                Root<T> root = criteriaQuery.from(cl);
+
+                getEntityManager()
+                        .createQuery(criteriaQuery.select(root))
+                        .getResultList()
+                        .forEach(emitter::onNext);
+
+                emitter.onComplete();
+
+            } catch (Exception e) {
+                emitter.onError(e);
+            }
+
+        });
+    }
+
     default <Params, T> Observable<T> find(Class<T> cl, Params params) {
         return Observable.create(emitter -> {
 
@@ -44,7 +67,7 @@ public interface JpaDao {
                 Root<T> root = criteriaQuery.from(cl);
 
                 getEntityManager()
-                        .createQuery(createCriteriaQuery(params, root, criteriaBuilder, criteriaQuery))
+                        .createQuery(buildCriteriaQuery(params, root, criteriaBuilder, criteriaQuery))
                         .getResultList()
                         .forEach(emitter::onNext);
 
@@ -73,7 +96,7 @@ public interface JpaDao {
         });
     }
 
-    default <Params, T> CriteriaQuery<T> createCriteriaQuery(Params params, Root<T> root, CriteriaBuilder criteriaBuilder, CriteriaQuery<T> criteriaQuery) {
+    default <Params, T> CriteriaQuery<T> buildCriteriaQuery(Params params, Root<T> root, CriteriaBuilder criteriaBuilder, CriteriaQuery<T> criteriaQuery) {
         return criteriaQuery
                 .select(createSelect(params, root, criteriaBuilder, criteriaQuery))
                 .distinct(createIsDistinct(params, root, criteriaBuilder, criteriaQuery))

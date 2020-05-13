@@ -1,7 +1,7 @@
 package com.gmail.bishoybasily.quarkus.resource;
 
-import com.gmail.bishoybasily.quarkus.model.dao.UsersDao;
 import com.gmail.bishoybasily.quarkus.model.entity.User;
+import com.gmail.bishoybasily.quarkus.model.service.UsersService;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +9,7 @@ import org.jboss.resteasy.annotations.cache.NoCache;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
@@ -21,21 +22,29 @@ import javax.ws.rs.core.MediaType;
 public class ResourceUsers {
 
     //    private final SecurityIdentity securityIdentity;
-    private final UsersDao usersDao;
+    private final UsersService usersService;
+
+//    @GET
+//    @Path("/me")
+//    @Produces(MediaType.APPLICATION_JSON)
+//    @NoCache
+//    public Single<User> me() {
+////        return Single.fromCallable(() -> {
+////            //        String name = securityIdentity.getPrincipal().getName();
+////            String name = "bishoybasily - reactive call";
+////            return new User().setUsername(name);
+////        });
+//
+//        return usersService.persist(new User().setName("base dao"));
+//
+//    }
 
     @GET
-    @Path("/me")
+    @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @NoCache
-    public Single<User> me() {
-//        return Single.fromCallable(() -> {
-//            //        String name = securityIdentity.getPrincipal().getName();
-//            String name = "bishoybasily - reactive call";
-//            return new User().setUsername(name);
-//        });
-
-        return usersDao.persist(new User().setName("base dao"));
-
+    public Single<User> one(@PathParam("id") String id) {
+        return usersService.one(id);
     }
 
     @GET
@@ -43,7 +52,7 @@ public class ResourceUsers {
     @Produces(MediaType.APPLICATION_JSON)
     @NoCache
     public Observable<User> all() {
-        return usersDao.find(User.class, new Object());
+        return usersService.all();
     }
 
 }

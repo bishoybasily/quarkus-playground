@@ -1,5 +1,6 @@
-package com.gmail.bishoybasily.quarkus;
+package com.gmail.bishoybasily.quarkus.model;
 
+import com.gmail.bishoybasily.quarkus.ObjectUtils;
 import org.hibernate.HibernateException;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.id.UUIDGenerator;
@@ -11,7 +12,7 @@ public class IdGenerator extends UUIDGenerator {
 
     public final static String
             NAME = "IdGenerator",
-            CLASS = "com.gmail.bishoybasily.quarkus.IdGenerator";
+            CLASS = "com.gmail.bishoybasily.quarkus.model.IdGenerator";
 
     @Override
     public final String generate(SharedSessionContractImplementor session, Object object) throws HibernateException {
