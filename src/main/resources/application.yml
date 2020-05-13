@@ -7,3 +7,19 @@
 #    client-id: first-party
 #    credentials:
 #      secret: bae20a62-a207-475a-b9f2-dc09921b9ddf
+
+quarkus:
+  hibernate-orm:
+    database:
+      generation: drop-and-create
+      globally-quoted-identifiers: true
+    log:
+      sql: true
+      binding-param: true
+      jdbc-warnings: true
+  datasource:
+    db-kind: mysql
+    username: root
+    password: toor
+    jdbc:
+      url: jdbc:mysql://127.0.0.1:3306/quarkus_playground?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=UTF-8&autoReconnect=true

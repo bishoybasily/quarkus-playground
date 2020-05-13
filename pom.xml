@@ -4,9 +4,9 @@
          xmlns="http://maven.apache.org/POM/4.0.0">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.acme</groupId>
-    <artifactId>code-with-quarkus</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <groupId>com.gmail.bishoybasily</groupId>
+    <artifactId>quarkus-playground</artifactId>
+    <version>1.0.0</version>
 
     <properties>
         <java.version>11</java.version>
@@ -29,6 +29,7 @@
             <artifactId>resteasy-rxjava2</artifactId>
         </dependency>
 
+
         <!--        <dependency>-->
         <!--            <groupId>io.quarkus</groupId>-->
         <!--            <artifactId>quarkus-reactive-mysql-client</artifactId>-->
@@ -48,11 +49,19 @@
 
         <dependency>
             <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-config-yaml</artifactId>
+            <artifactId>quarkus-jdbc-mysql</artifactId>
         </dependency>
         <dependency>
             <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-resteasy</artifactId>
+            <artifactId>quarkus-hibernate-orm</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-security-jpa</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-config-yaml</artifactId>
         </dependency>
         <dependency>
             <groupId>io.quarkus</groupId>
